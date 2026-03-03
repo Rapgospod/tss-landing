@@ -1,209 +1,513 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ton Secret Shop — Design & Web3 Studio</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ton Secret Shop — Design & Web3 Studio</title>
+  <meta name="description" content="Ton Secret Shop: stickers, emojis, NFTs, animations, branding. Order in Telegram." />
 
-<style>
-:root{
---bg:#070A12;
---text:rgba(255,255,255,.92);
---muted:rgba(255,255,255,.65);
---brand1:#7C4DFF;
---brand2:#00E5FF;
---radius:20px;
-}
+  <style>
+    :root{
+      --bg: #070A12;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.08);
+      --stroke: rgba(255,255,255,.12);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.68);
+      --brand1: #7C4DFF;
+      --brand2: #00E5FF;
+      --ok: #37ff8b;
+      --shadow: 0 18px 60px rgba(0,0,0,.55);
+      --radius: 18px;
+      --radius2: 26px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background: radial-gradient(900px 500px at 10% 10%, rgba(124,77,255,.22), transparent 55%),
+                  radial-gradient(900px 600px at 90% 20%, rgba(0,229,255,.16), transparent 55%),
+                  radial-gradient(900px 700px at 50% 110%, rgba(124,77,255,.18), transparent 60%),
+                  var(--bg);
+      overflow-x:hidden;
+    }
+    a{color:inherit;text-decoration:none}
 
-*{box-sizing:border-box}
-body{
-margin:0;
-font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
-background:
-radial-gradient(800px 400px at 20% 10%,rgba(124,77,255,.25),transparent 60%),
-radial-gradient(900px 600px at 80% 20%,rgba(0,229,255,.15),transparent 60%),
-var(--bg);
-color:var(--text);
-}
+    .wrap{max-width:1080px;margin:0 auto;padding:22px}
 
-.wrap{max-width:1100px;margin:auto;padding:24px}
-h1,h2{margin:0 0 12px}
+    /* NAV */
+    .nav{
+      position:sticky; top:0; z-index:20;
+      backdrop-filter: blur(14px);
+      background: linear-gradient(to bottom, rgba(7,10,18,.86), rgba(7,10,18,.58));
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .navin{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{
+      width:38px;height:38px;border-radius:14px;
+      background:
+        radial-gradient(12px 12px at 30% 35%, rgba(255,255,255,.55), transparent 55%),
+        linear-gradient(135deg, rgba(124,77,255,.9), rgba(0,229,255,.85));
+      box-shadow: 0 14px 40px rgba(124,77,255,.20);
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .brand h1{font-size:14px;letter-spacing:.4px;margin:0}
+    .brand p{margin:0;font-size:12px;color:var(--muted)}
+    .menu{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .chip{
+      padding:10px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color:rgba(255,255,255,.78);
+      font-size:13px;
+      transition:.2s;
+    }
+    .chip:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06)}
+    .btn{
+      padding:11px 14px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: linear-gradient(135deg, rgba(124,77,255,.95), rgba(0,229,255,.85));
+      font-weight:700;font-size:13px;color:#061018;
+      box-shadow: 0 18px 50px rgba(124,77,255,.20);
+      transition:.2s;
+      white-space:nowrap;
+    }
+    .btn:hover{transform:translateY(-1px);filter:saturate(1.05)}
 
-.nav{
-display:flex;
-justify-content:space-between;
-align-items:center;
-margin-bottom:40px;
-}
+    /* HERO */
+    .hero{padding:28px 0 10px}
+    .heroGrid{
+      display:grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap:18px;
+      align-items:stretch;
+    }
+    .card{
+      border:1px solid rgba(255,255,255,.10);
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border-radius: var(--radius2);
+      box-shadow: var(--shadow);
+    }
+    .heroMain{padding:22px}
+    .kicker{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:8px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.04);
+      color: rgba(255,255,255,.80);
+      font-size:12px;
+    }
+    .dot{
+      width:8px;height:8px;border-radius:999px;
+      background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.2));
+      box-shadow: 0 0 0 6px rgba(124,77,255,.16);
+    }
+    .heroTitle{
+      margin:14px 0 10px;
+      font-size:38px;
+      line-height:1.05;
+      letter-spacing:-.6px;
+    }
+    .gradText{
+      background: linear-gradient(90deg, var(--brand1), var(--brand2));
+      -webkit-background-clip:text;background-clip:text;color:transparent;
+    }
+    .heroDesc{
+      margin:0 0 18px;
+      color: var(--muted);
+      font-size:15px;
+      line-height:1.5;
+      max-width:58ch;
+    }
+    .heroActions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+    .btn2{
+      padding:11px 14px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.05);
+      color: rgba(255,255,255,.92);
+      font-weight:700;font-size:13px;
+      transition:.2s;
+    }
+    .btn2:hover{transform:translateY(-1px);background:rgba(255,255,255,.07)}
+    .mini{
+      margin-top:14px;
+      display:flex;gap:10px;flex-wrap:wrap;
+      color: rgba(255,255,255,.78);
+      font-size:12px;
+    }
+    .badge{
+      padding:8px 10px;border-radius:999px;
+      background: rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.10);
+    }
 
-.btn{
-padding:10px 16px;
-border-radius:999px;
-background:linear-gradient(90deg,var(--brand1),var(--brand2));
-color:#000;
-font-weight:700;
-text-decoration:none;
-}
+    .heroSide{padding:18px;display:flex;flex-direction:column;gap:12px}
+    .stat{
+      padding:14px;border-radius:var(--radius);
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.10);
+    }
+    .stat h3{margin:0 0 6px;font-size:14px}
+    .stat p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+    .list{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:8px}
+    .list li{
+      display:flex;gap:10px;align-items:flex-start;
+      color: rgba(255,255,255,.82);
+      font-size:13px;line-height:1.35;
+    }
+    .tick{
+      width:18px;height:18px;border-radius:6px;
+      background: rgba(55,255,139,.12);
+      border:1px solid rgba(55,255,139,.25);
+      display:inline-flex;align-items:center;justify-content:center;
+      color: var(--ok);font-weight:900;font-size:12px;flex:0 0 auto;
+      margin-top:1px;
+    }
 
-.hero{
-margin-bottom:60px;
-}
+    /* SECTIONS */
+    .section{padding:14px 0}
+    .sectionHeader{
+      display:flex;align-items:end;justify-content:space-between;gap:14px;flex-wrap:wrap;
+      margin:10px 0 12px;
+    }
+    .sectionHeader h2{margin:0;font-size:20px;letter-spacing:-.2px}
+    .sectionHeader p{margin:0;color:var(--muted);font-size:13px;max-width:70ch}
 
-.hero h1{
-font-size:40px;
-line-height:1.1;
-}
+    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .tile{
+      padding:16px;border-radius:var(--radius2);
+      background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.10);
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+      min-height:140px;
+    }
+    .tile .icon{
+      width:44px;height:44px;border-radius:16px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;
+      margin-bottom:10px;
+      position:relative;
+      overflow:hidden;
+    }
+    .tile .icon::after{
+      content:"";
+      position:absolute; inset:-30px;
+      background: radial-gradient(circle at 30% 30%, rgba(124,77,255,.55), transparent 55%),
+                  radial-gradient(circle at 70% 70%, rgba(0,229,255,.38), transparent 55%);
+      opacity:.7;
+    }
+    .tile h3{margin:0 0 6px;font-size:15px}
+    .tile p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
+    .price{
+      margin-top:10px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding-top:10px;border-top:1px dashed rgba(255,255,255,.14);
+      color: rgba(255,255,255,.84);
+      font-size:13px;
+    }
+    .price b{font-size:14px}
+    .tag{
+      font-size:12px;
+      padding:6px 10px;border-radius:999px;
+      background: rgba(255,255,255,.05);
+      border:1px solid rgba(255,255,255,.10);
+      color: rgba(255,255,255,.78);
+      white-space:nowrap;
+    }
 
-.hero p{
-color:var(--muted);
-max-width:600px;
-}
+    /* PORTFOLIO placeholders + "дороже" */
+    .portfolio{
+      display:grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap:10px;
+    }
+    .ph{
+      aspect-ratio: 1 / 1;
+      border-radius: 18px;
+      border:1px solid rgba(255,255,255,.10);
+      background:
+        radial-gradient(160px 110px at 22% 28%, rgba(124,77,255,.30), transparent 62%),
+        radial-gradient(160px 110px at 74% 74%, rgba(0,229,255,.18), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+      overflow:hidden;
+      position:relative;
 
-.section{
-margin-bottom:60px;
-}
+      /* старт для анимации */
+      transform: perspective(900px) rotateY(-18deg) rotateX(10deg) translateY(14px);
+      opacity: 0;
+      transition: transform .75s cubic-bezier(.2,.9,.2,1), opacity .75s ease;
+      will-change: transform, opacity;
+    }
+    .ph::before{
+      content:"";
+      position:absolute; inset:-60px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.10), transparent 45%),
+        radial-gradient(circle at 70% 70%, rgba(255,255,255,.06), transparent 50%);
+      filter: blur(0px);
+      opacity:.85;
+      pointer-events:none;
+    }
+    .ph::after{
+      content:"";
+      position:absolute; inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,.10), transparent 35%, rgba(0,0,0,.16));
+      opacity:.55;
+      pointer-events:none;
+    }
+    .ph span{
+      position:absolute; left:12px; bottom:12px;
+      font-size:12px;
+      color: rgba(255,255,255,.80);
+      background: rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.10);
+      padding:6px 10px;border-radius:999px;
+      backdrop-filter: blur(10px);
+    }
+    .ph:hover{
+      transform: perspective(900px) rotateY(-6deg) rotateX(4deg) translateY(8px);
+      border-color: rgba(255,255,255,.16);
+    }
+    /* когда в зоне видимости */
+    .ph.reveal{
+      opacity: 1;
+      transform: perspective(900px) rotateY(0deg) rotateX(0deg) translateY(0);
+    }
 
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
-gap:16px;
-}
+    /* CTA */
+    .cta{
+      padding:18px;
+      border-radius: var(--radius2);
+      border:1px solid rgba(255,255,255,.12);
+      background: radial-gradient(900px 500px at 10% 10%, rgba(124,77,255,.20), transparent 55%),
+                  radial-gradient(900px 600px at 90% 30%, rgba(0,229,255,.14), transparent 55%),
+                  rgba(255,255,255,.05);
+      box-shadow: var(--shadow);
+      display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+    }
+    .cta h3{margin:0;font-size:18px}
+    .cta p{margin:6px 0 0;color:var(--muted);font-size:13px;max-width:68ch}
 
-.card{
-padding:18px;
-border-radius:var(--radius);
-background:rgba(255,255,255,.05);
-border:1px solid rgba(255,255,255,.08);
-}
+    .footer{
+      padding:18px 0 34px;
+      color: rgba(255,255,255,.55);
+      font-size:12px;
+      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
+    }
 
-.portfolio-item{
-aspect-ratio:1/1;
-border-radius:var(--radius);
-overflow:hidden;
-cursor:pointer;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.portfolio-item img{
-width:100%;
-height:100%;
-object-fit:cover;
-display:block;
-}
-
-/* modal */
-.modal{
-position:fixed;
-inset:0;
-display:none;
-background:rgba(0,0,0,.8);
-align-items:center;
-justify-content:center;
-z-index:999;
-}
-
-.modal.open{display:flex}
-
-.modal img{
-max-width:90%;
-max-height:90%;
-border-radius:16px;
-}
-
-.footer{
-opacity:.5;
-font-size:12px;
-margin-top:80px;
-}
-</style>
+    @media (max-width: 900px){
+      .heroGrid{grid-template-columns:1fr}
+      .heroTitle{font-size:34px}
+      .grid3{grid-template-columns:1fr}
+      .portfolio{grid-template-columns:repeat(3,1fr)}
+    }
+  </style>
 </head>
 
 <body>
+  <!-- NAV -->
+  <div class="nav">
+    <div class="wrap navin">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>Ton Secret Shop</h1>
+          <p>Design & Web3 Studio</p>
+        </div>
+      </div>
 
-<div class="wrap">
+      <div class="menu">
+        <a class="chip" href="#services">Услуги</a>
+        <a class="chip" href="#portfolio">Портфолио</a>
+        <a class="chip" href="#prices">Прайс</a>
+        <a class="btn" href="https://t.me/TSS_SHOPbot" target="_blank" rel="noreferrer">Order in Telegram</a>
+      </div>
+    </div>
+  </div>
 
-<div class="nav">
-<div><strong>Ton Secret Shop</strong></div>
-<a class="btn" href="https://t.me/TSS_SHOPbot" target="_blank">Order in Telegram</a>
-</div>
+  <!-- HERO -->
+  <div class="wrap hero" id="top">
+    <div class="heroGrid">
+      <div class="card heroMain">
+        <div class="kicker"><span class="dot"></span> Быстро · Чисто · В стиле TON/Web3</div>
+        <h2 class="heroTitle">
+          Дизайн, который <span class="gradText">продаёт</span><br/>
+          и выглядит <span class="gradText">дорого</span>.
+        </h2>
+        <p class="heroDesc">
+          Стикеры/эмодзи, NFT-арт, анимация и брендинг.
+          Минимализм, сильная композиция и аккуратный web3 вайб — под Telegram и комьюнити.
+        </p>
+        <div class="heroActions">
+          <a class="btn" href="https://t.me/TSS_SHOPbot" target="_blank" rel="noreferrer">Сделать заказ</a>
+          <a class="btn2" href="#prices">Смотреть прайс</a>
+          <a class="btn2" href="#portfolio">Портфолио</a>
+        </div>
+        <div class="mini">
+          <div class="badge">⏱️ 24–72h</div>
+          <div class="badge">💬 Telegram</div>
+          <div class="badge">🧾 crypto / card</div>
+        </div>
+      </div>
 
-<div class="hero">
-<h1>Дизайн для Web3 и Telegram проектов</h1>
-<p>Стикеры, NFT, анимация и брендинг в минималистичном стиле. Быстро, аккуратно и без лишнего шума.</p>
-</div>
+      <div class="card heroSide">
+        <div class="stat">
+          <h3>Что получишь</h3>
+          <ul class="list">
+            <li><span class="tick">✓</span><span>Чистый визуал без шума + ровная типографика.</span></li>
+            <li><span class="tick">✓</span><span>Файлы под TG/маркетплейсы/соцсети.</span></li>
+            <li><span class="tick">✓</span><span>Внятные сроки и человеческая коммуникация.</span></li>
+          </ul>
+        </div>
+        <div class="stat">
+          <h3>Быстрый старт</h3>
+          <p>Нажми “Order in Telegram”, выбери услугу и прикрепи референсы. Ответим и посчитаем срок.</p>
+          <p style="margin:10px 0 0;color:rgba(255,255,255,.80);font-size:13px">Bot: <b>@TSS_SHOPbot</b></p>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="section">
-<h2>Услуги</h2>
-<div class="grid">
-<div class="card">
-<strong>Стикеры / Эмодзи</strong><br><br>
-Статика — $6.5<br>
-Анимация — $55
-</div>
+  <!-- SERVICES -->
+  <div class="wrap section" id="services">
+    <div class="sectionHeader">
+      <div>
+        <h2>Услуги</h2>
+        <p>Минимум лишнего — максимум смысла. Делаем то, что усиливает доверие и выглядит как продукт.</p>
+      </div>
+    </div>
 
-<div class="card">
-<strong>NFT Арт</strong><br><br>
-Статика — от $150<br>
-Анимация — от $250
-</div>
+    <div class="grid3">
+      <div class="tile">
+        <div class="icon" aria-hidden="true">⭐</div>
+        <h3>Стикер / Эмодзи</h3>
+        <p>Статика или анимация для Telegram. Характер, стиль, читаемость, “дорогой” вайб.</p>
+        <div class="price">
+          <span class="tag">TG Ready</span>
+          <span>от <b>$6.5</b> / <b>$55</b></span>
+        </div>
+      </div>
 
-<div class="card">
-<strong>Анимация</strong><br><br>
-Короткие ролики и motion-дизайн
-</div>
-</div>
-</div>
+      <div class="tile">
+        <div class="icon" aria-hidden="true">💜</div>
+        <h3>NFT Арт</h3>
+        <p>Статичный или анимированный арт. Цена зависит от сложности и концепта.</p>
+        <div class="price">
+          <span class="tag">Web3</span>
+          <span>от <b>$150</b> / <b>$250</b></span>
+        </div>
+      </div>
 
-<div class="section">
-<h2>Портфолио</h2>
-<div class="grid" id="portfolio"></div>
-</div>
+      <div class="tile">
+        <div class="icon" aria-hidden="true">✨</div>
+        <h3>Анимация</h3>
+        <p>Короткие ролики, интро, баннеры. Акцент на “солидно и чисто”.</p>
+        <div class="price">
+          <span class="tag">Motion</span>
+          <span><b>по запросу</b></span>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<div class="footer">
-© <span id="year"></span> Ton Secret Shop
-</div>
+  <!-- PORTFOLIO -->
+  <div class="wrap section" id="portfolio">
+    <div class="sectionHeader">
+      <div>
+        <h2>Портфолио</h2>
+        <p>Подборка работ (пока заглушки — позже заменишь картинками).</p>
+      </div>
+    </div>
 
-</div>
+    <div class="portfolio">
+      <div class="ph"><span>Work 01</span></div>
+      <div class="ph"><span>Work 02</span></div>
+      <div class="ph"><span>Work 03</span></div>
+      <div class="ph"><span>Work 04</span></div>
+      <div class="ph"><span>Work 05</span></div>
+      <div class="ph"><span>Work 06</span></div>
+    </div>
+  </div>
 
-<div class="modal" id="modal">
-<img id="modalImg">
-</div>
+  <!-- PRICES -->
+  <div class="wrap section" id="prices">
+    <div class="sectionHeader">
+      <div>
+        <h2>Прайс</h2>
+        <p>Прозрачно и по делу.</p>
+      </div>
+    </div>
 
-<script>
-document.getElementById("year").textContent=new Date().getFullYear();
+    <div class="grid3">
+      <div class="tile">
+        <h3>⭐️ Стикеры / Эмодзи</h3>
+        <p>Статичные — <b>$6.5</b> / шт<br/>
+           Анимированные — <b>$55</b> / шт<br/>
+           Правки: 2 бесплатно, дальше <b>$1</b> / правка</p>
+      </div>
 
-const portfolio=document.getElementById("portfolio");
-const modal=document.getElementById("modal");
-const modalImg=document.getElementById("modalImg");
+      <div class="tile">
+        <h3>🌸 Дизайн</h3>
+        <p>Обои/Аватар/Баннер — <b>$20</b><br/>
+           Логотип — <b>$40</b><br/>
+           Комикс — <b>$100–150</b> (8–30 стр.)</p>
+      </div>
 
-const maxImages=30;
+      <div class="tile">
+        <h3>⭐️ Композиция сторис</h3>
+        <p>9 частей — <b>$30</b><br/>
+           12 частей — <b>$50</b><br/>
+           15 частей — <b>$70</b></p>
+      </div>
+    </div>
+  </div>
 
-for(let i=1;i<=maxImages;i++){
-let src=`images/pic${i}.png`;
+  <!-- CTA -->
+  <div class="wrap section">
+    <div class="cta">
+      <div>
+        <h3>Готов стартовать прямо сейчас?</h3>
+        <p>Нажми кнопку, выбери услугу и скинь референсы. Быстро ответим и обозначим срок.</p>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="btn" href="https://t.me/TSS_SHOPbot" target="_blank" rel="noreferrer">Order in Telegram</a>
+        <a class="btn2" href="#top">Наверх</a>
+      </div>
+    </div>
 
-let wrapper=document.createElement("div");
-wrapper.className="portfolio-item";
+    <div class="footer">
+      <div>© <span id="y"></span> Ton Secret Shop</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <a class="chip" href="https://t.me/TSS_SHOPbot" target="_blank" rel="noreferrer">@TSS_SHOPbot</a>
+        <a class="chip" href="#services">Services</a>
+      </div>
+    </div>
+  </div>
 
-let img=document.createElement("img");
-img.src=src;
-img.loading="lazy";
+  <script>
+    // год в футере
+    document.getElementById("y").textContent = new Date().getFullYear();
 
-img.onerror=()=>wrapper.remove();
+    // Анимация "поочерёдного разворота" тайлов портфолио при скролле
+    (function(){
+      const tiles = Array.from(document.querySelectorAll('.ph'));
+      tiles.forEach((el, i) => {
+        el.style.transitionDelay = (i * 90) + 'ms'; // поочерёдность
+      });
 
-wrapper.appendChild(img);
-portfolio.appendChild(wrapper);
+      const obs = new IntersectionObserver((entries) => {
+        entries.forEach((e) => {
+          if (e.isIntersecting) e.target.classList.add('reveal');
+        });
+      }, { threshold: 0.18 });
 
-wrapper.onclick=()=>{
-modalImg.src=src;
-modal.classList.add("open");
-};
-}
-
-modal.onclick=()=>{
-modal.classList.remove("open");
-modalImg.src="";
-};
-</script>
-
+      tiles.forEach(t => obs.observe(t));
+    })();
+  </script>
 </body>
 </html>
