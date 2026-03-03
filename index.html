@@ -1,571 +1,209 @@
 <!doctype html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Ton Secret Shop — Design & Web3 Studio</title>
-  <meta name="description" content="Ton Secret Shop: stickers, emojis, NFTs, animations, branding. Order in Telegram." />
-  <style>
-    :root{
-      --bg: #070A12;
-      --panel: rgba(255,255,255,.06);
-      --panel2: rgba(255,255,255,.08);
-      --stroke: rgba(255,255,255,.12);
-      --text: rgba(255,255,255,.92);
-      --muted: rgba(255,255,255,.68);
-      --brand1: #7C4DFF;
-      --brand2: #00E5FF;
-      --ok: #37ff8b;
-      --warn: #ffcd4a;
-      --shadow: 0 18px 60px rgba(0,0,0,.55);
-      --radius: 18px;
-      --radius2: 26px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      background: radial-gradient(900px 500px at 10% 10%, rgba(124,77,255,.22), transparent 55%),
-                  radial-gradient(900px 600px at 90% 20%, rgba(0,229,255,.16), transparent 55%),
-                  radial-gradient(900px 700px at 50% 110%, rgba(124,77,255,.18), transparent 60%),
-                  var(--bg);
-      overflow-x:hidden;
-    }
-    a{color:inherit;text-decoration:none}
-    .wrap{max-width:1080px;margin:0 auto;padding:22px}
-    .nav{
-      position:sticky; top:0; z-index:20;
-      backdrop-filter: blur(14px);
-      background: linear-gradient(to bottom, rgba(7,10,18,.86), rgba(7,10,18,.58));
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-    .navin{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .brand{display:flex;align-items:center;gap:12px}
-    .logo{
-      width:38px;height:38px;border-radius:14px;
-      background:
-        radial-gradient(12px 12px at 30% 35%, rgba(255,255,255,.55), transparent 55%),
-        linear-gradient(135deg, rgba(124,77,255,.9), rgba(0,229,255,.85));
-      box-shadow: 0 14px 40px rgba(124,77,255,.20);
-      border:1px solid rgba(255,255,255,.18);
-    }
-    .brand h1{font-size:14px;letter-spacing:.4px;margin:0}
-    .brand p{margin:0;font-size:12px;color:var(--muted)}
-    .menu{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-    .chip{
-      padding:10px 12px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color:rgba(255,255,255,.78);
-      font-size:13px;
-      transition:.2s;
-    }
-    .chip:hover{transform:translateY(-1px);border-color:rgba(255,255,255,.18);background:rgba(255,255,255,.06)}
-    .btn{
-      padding:11px 14px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: linear-gradient(135deg, rgba(124,77,255,.95), rgba(0,229,255,.85));
-      font-weight:700;font-size:13px;color:#061018;
-      box-shadow: 0 18px 50px rgba(124,77,255,.20);
-      transition:.2s;
-      white-space:nowrap;
-    }
-    .btn:hover{transform:translateY(-1px);filter:saturate(1.05)}
-    .hero{padding:28px 0 10px}
-    .heroGrid{
-      display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap:18px;
-      align-items:stretch;
-    }
-    .card{
-      border:1px solid rgba(255,255,255,.10);
-      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
-      border-radius: var(--radius2);
-      box-shadow: var(--shadow);
-    }
-    .heroMain{padding:22px}
-    .kicker{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:8px 12px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.04);
-      color: rgba(255,255,255,.80);
-      font-size:12px;
-    }
-    .dot{
-      width:8px;height:8px;border-radius:999px;
-      background: radial-gradient(circle at 30% 30%, #fff, rgba(255,255,255,.2));
-      box-shadow: 0 0 0 6px rgba(124,77,255,.16);
-    }
-    .heroTitle{
-      margin:14px 0 10px;
-      font-size:38px;
-      line-height:1.05;
-      letter-spacing:-.6px;
-    }
-    .gradText{
-      background: linear-gradient(90deg, var(--brand1), var(--brand2));
-      -webkit-background-clip:text;background-clip:text;color:transparent;
-    }
-    .heroDesc{
-      margin:0 0 18px;
-      color: var(--muted);
-      font-size:15px;
-      line-height:1.5;
-      max-width:58ch;
-    }
-    .heroActions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-    .btn2{
-      padding:11px 14px;border-radius:999px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.05);
-      color: rgba(255,255,255,.92);
-      font-weight:700;font-size:13px;
-      transition:.2s;
-    }
-    .btn2:hover{transform:translateY(-1px);background:rgba(255,255,255,.07)}
-    .mini{
-      margin-top:14px;
-      display:flex;gap:10px;flex-wrap:wrap;
-      color: rgba(255,255,255,.78);
-      font-size:12px;
-    }
-    .badge{
-      padding:8px 10px;border-radius:999px;
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.10);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ton Secret Shop — Design & Web3 Studio</title>
 
-    .heroSide{padding:18px;display:flex;flex-direction:column;gap:12px}
-    .stat{
-      padding:14px;border-radius:var(--radius);
-      background: rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.10);
-    }
-    .stat h3{margin:0 0 6px;font-size:14px}
-    .stat p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
-    .list{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:8px}
-    .list li{
-      display:flex;gap:10px;align-items:flex-start;
-      color: rgba(255,255,255,.82);
-      font-size:13px;line-height:1.35;
-    }
-    .tick{
-      width:18px;height:18px;border-radius:6px;
-      background: rgba(55,255,139,.12);
-      border:1px solid rgba(55,255,139,.25);
-      display:inline-flex;align-items:center;justify-content:center;
-      color: var(--ok);font-weight:900;font-size:12px;flex:0 0 auto;
-      margin-top:1px;
-    }
-
-    .section{padding:14px 0}
-    .sectionHeader{
-      display:flex;align-items:end;justify-content:space-between;gap:14px;flex-wrap:wrap;
-      margin:10px 0 12px;
-    }
-    .sectionHeader h2{margin:0;font-size:20px;letter-spacing:-.2px}
-    .sectionHeader p{margin:0;color:var(--muted);font-size:13px;max-width:70ch}
-
-    .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .tile{
-      padding:16px;border-radius:var(--radius2);
-      background: linear-gradient(180deg, rgba(255,255,255,.055), rgba(255,255,255,.03));
-      border:1px solid rgba(255,255,255,.10);
-      box-shadow: 0 14px 40px rgba(0,0,0,.35);
-      min-height:140px;
-    }
-    .tile .icon{
-      width:44px;height:44px;border-radius:16px;
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      display:flex;align-items:center;justify-content:center;
-      font-weight:900;
-      margin-bottom:10px;
-      position:relative;
-      overflow:hidden;
-    }
-    .tile .icon::after{
-      content:"";
-      position:absolute; inset:-30px;
-      background: radial-gradient(circle at 30% 30%, rgba(124,77,255,.55), transparent 55%),
-                  radial-gradient(circle at 70% 70%, rgba(0,229,255,.38), transparent 55%);
-      filter: blur(0px);
-      opacity:.7;
-    }
-    .tile h3{margin:0 0 6px;font-size:15px}
-    .tile p{margin:0;color:var(--muted);font-size:13px;line-height:1.45}
-    .price{
-      margin-top:10px;
-      display:flex;align-items:center;justify-content:space-between;gap:10px;
-      padding-top:10px;border-top:1px dashed rgba(255,255,255,.14);
-      color: rgba(255,255,255,.84);
-      font-size:13px;
-    }
-    .price b{font-size:14px}
-    .tag{
-      font-size:12px;
-      padding:6px 10px;border-radius:999px;
-      background: rgba(255,255,255,.05);
-      border:1px solid rgba(255,255,255,.10);
-      color: rgba(255,255,255,.78);
-      white-space:nowrap;
-    }
-
-    .portfolio{
-      display:grid; grid-template-columns: repeat(6, 1fr); gap:10px;
-    }
-    .ph{
-      aspect-ratio: 1 / 1;
-      border-radius: 18px;
-      border:1px solid rgba(255,255,255,.10);
-      background:
-        radial-gradient(120px 80px at 30% 30%, rgba(124,77,255,.32), transparent 60%),
-        radial-gradient(120px 80px at 70% 70%, rgba(0,229,255,.22), transparent 60%),
-        rgba(255,255,255,.04);
-      overflow:hidden;
-      position:relative;
-    }
-    .ph span{
-      position:absolute; left:12px; bottom:12px;
-      font-size:12px;
-      color: rgba(255,255,255,.78);
-      background: rgba(0,0,0,.25);
-      border:1px solid rgba(255,255,255,.10);
-      padding:6px 10px;border-radius:999px;
-      backdrop-filter: blur(10px);
-    }
-
-    .cta{
-      padding:18px;
-      border-radius: var(--radius2);
-      border:1px solid rgba(255,255,255,.12);
-      background: radial-gradient(900px 500px at 10% 10%, rgba(124,77,255,.20), transparent 55%),
-                  radial-gradient(900px 600px at 90% 30%, rgba(0,229,255,.14), transparent 55%),
-                  rgba(255,255,255,.05);
-      box-shadow: var(--shadow);
-      display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
-    }
-    .cta h3{margin:0;font-size:18px}
-    .cta p{margin:6px 0 0;color:var(--muted);font-size:13px;max-width:68ch}
-
-    .footer{
-      padding:18px 0 34px;
-      color: rgba(255,255,255,.55);
-      font-size:12px;
-      display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;
-    }
-    .hr{height:1px;background:rgba(255,255,255,.08);margin:14px 0}
-
-    @media (max-width: 900px){
-      .heroGrid{grid-template-columns:1fr}
-      .heroTitle{font-size:34px}
-      .grid3{grid-template-columns:1fr}
-      .portfolio{grid-template-columns:repeat(3,1fr)}
-    }
-    /* Portfolio images */
-.ph.isImg { cursor: zoom-in; }
-.ph.isImg img{
-  width:100%;
-  height:100%;
-  object-fit: cover;
-  display:block;
-  border-radius: 18px;
-  filter: saturate(1.05);
+<style>
+:root{
+--bg:#070A12;
+--text:rgba(255,255,255,.92);
+--muted:rgba(255,255,255,.65);
+--brand1:#7C4DFF;
+--brand2:#00E5FF;
+--radius:20px;
 }
 
-/* Modal */
+*{box-sizing:border-box}
+body{
+margin:0;
+font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+background:
+radial-gradient(800px 400px at 20% 10%,rgba(124,77,255,.25),transparent 60%),
+radial-gradient(900px 600px at 80% 20%,rgba(0,229,255,.15),transparent 60%),
+var(--bg);
+color:var(--text);
+}
+
+.wrap{max-width:1100px;margin:auto;padding:24px}
+h1,h2{margin:0 0 12px}
+
+.nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:40px;
+}
+
+.btn{
+padding:10px 16px;
+border-radius:999px;
+background:linear-gradient(90deg,var(--brand1),var(--brand2));
+color:#000;
+font-weight:700;
+text-decoration:none;
+}
+
+.hero{
+margin-bottom:60px;
+}
+
+.hero h1{
+font-size:40px;
+line-height:1.1;
+}
+
+.hero p{
+color:var(--muted);
+max-width:600px;
+}
+
+.section{
+margin-bottom:60px;
+}
+
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+gap:16px;
+}
+
+.card{
+padding:18px;
+border-radius:var(--radius);
+background:rgba(255,255,255,.05);
+border:1px solid rgba(255,255,255,.08);
+}
+
+.portfolio-item{
+aspect-ratio:1/1;
+border-radius:var(--radius);
+overflow:hidden;
+cursor:pointer;
+border:1px solid rgba(255,255,255,.08);
+}
+
+.portfolio-item img{
+width:100%;
+height:100%;
+object-fit:cover;
+display:block;
+}
+
+/* modal */
 .modal{
-  position: fixed;
-  inset: 0;
-  display: none;
-  z-index: 999;
+position:fixed;
+inset:0;
+display:none;
+background:rgba(0,0,0,.8);
+align-items:center;
+justify-content:center;
+z-index:999;
 }
-.modal.open{ display:block; }
-.modalOverlay{
-  position:absolute; inset:0;
-  background: rgba(0,0,0,.72);
-  backdrop-filter: blur(8px);
+
+.modal.open{display:flex}
+
+.modal img{
+max-width:90%;
+max-height:90%;
+border-radius:16px;
 }
-.modalBox{
-  position: absolute;
-  left: 50%; top: 50%;
-  transform: translate(-50%, -50%);
-  width: min(920px, calc(100vw - 28px));
-  border-radius: 22px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(8,10,16,.78);
-  box-shadow: 0 30px 120px rgba(0,0,0,.7);
-  overflow: hidden;
+
+.footer{
+opacity:.5;
+font-size:12px;
+margin-top:80px;
 }
-.modalImg{
-  width: 100%;
-  height: auto;
-  display:block;
-}
-.modalClose{
-  position:absolute;
-  top:10px; right:10px;
-  width: 40px; height: 40px;
-  border-radius: 999px;
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.08);
-  color: rgba(255,255,255,.92);
-  font-weight: 900;
-  cursor: pointer;
-}
-.modalClose:hover{ background: rgba(255,255,255,.12); }
-  </style>
+</style>
 </head>
+
 <body>
 
-  <!-- NAV -->
-  <div class="nav">
-    <div class="wrap navin">
-      <div class="brand">
-        <div class="logo" aria-hidden="true"></div>
-        <div>
-          <h1>Ton Secret Shop</h1>
-          <p>Design & Web3 Studio</p>
-        </div>
-      </div>
+<div class="wrap">
 
-      <div class="menu">
-        <a class="chip" href="#services">Услуги</a>
-        <a class="chip" href="#portfolio">Портфолио</a>
-        <a class="chip" href="#prices">Прайс</a>
-        <a class="btn" href="https://t.me/TSS_SHOPbot" target="_blank" rel="noreferrer">Order in Telegram</a>
-      </div>
-    </div>
-  </div>
-
-  <!-- HERO -->
-  <div class="wrap hero" id="top">
-    <div class="heroGrid">
-      <div class="card heroMain">
-        <div class="kicker"><span class="dot"></span> Быстро · Чисто · В стиле TON/Web3</div>
-        <h2 class="heroTitle">
-          Дизайн, который <span class="gradText">продаёт</span><br/>
-          и выглядит <span class="gradText">дорого</span>.
-        </h2>
-        <p class="heroDesc">
-          Мы делаем стикеры/эмодзи, NFT-арт, анимацию и брендинг.
-          Минимализм, чёткая композиция и аккуратный web3 вайб — как в нашем Telegram Mini App.
-        </p>
-        <div class="heroActions">
-          <a class="btn" href="https://t.me/TSS_SHOPbot" target="_blank" rel="noreferrer">Сделать заказ</a>
-          <a class="btn2" href="#prices">Смотреть прайс</a>
-          <a class="btn2" href="#portfolio">Портфолио</a>
-        </div>
-        <div class="mini">
-          <div class="badge">⏱️ Сроки: 24–72h</div>
-          <div class="badge">💬 Коммуникация: Telegram</div>
-          <div class="badge">🧾 Оплата: crypto / card</div>
-        </div>
-      </div>
-
-      <div class="card heroSide">
-        <div class="stat">
-          <h3>Что получишь</h3>
-          <ul class="list">
-            <li><span class="tick">✓</span><span>Чистый дизайн без “колхоза” + ровная типографика.</span></li>
-            <li><span class="tick">✓</span><span>Файлы и исходники под нужные платформы (TG/маркетплейсы/соцсети).</span></li>
-            <li><span class="tick">✓</span><span>Правки включены (по договорённости), без нервов.</span></li>
-          </ul>
-        </div>
-        <div class="stat">
-          <h3>Быстрый старт</h3>
-          <p>Жми “Order in Telegram”, выбирай услугу и прикрепляй референсы. Ответим и посчитаем срок.</p>
-          <div class="hr"></div>
-          <p style="margin:0;color:rgba(255,255,255,.80);font-size:13px">
-            Bot: <b>@TSS_SHOPbot</b>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- SERVICES -->
-  <div class="wrap section" id="services">
-    <div class="sectionHeader">
-      <div>
-        <h2>Услуги</h2>
-        <p>Минимум лишнего. Максимум смысла. Делаем ровно то, что нужно проекту, чтобы выглядеть солидно.</p>
-      </div>
-    </div>
-
-    <div class="grid3">
-      <div class="tile">
-        <div class="icon" aria-hidden="true">⭐</div>
-        <h3>Стикер / Эмодзи</h3>
-        <p>Статика или анимация для Telegram. Чистая форма, стильный характер, идеально под комьюнити.</p>
-        <div class="price">
-          <span class="tag">TG Ready</span>
-          <span>от <b>$6.5</b> / <b>$55</b></span>
-        </div>
-      </div>
-
-      <div class="tile">
-        <div class="icon" aria-hidden="true">💜</div>
-        <h3>NFT Арт</h3>
-        <p>Статичный или анимированный NFT-арт. Цена зависит от сложности и концепта.</p>
-        <div class="price">
-          <span class="tag">Web3</span>
-          <span>от <b>$150</b> / <b>$250</b></span>
-        </div>
-      </div>
-
-      <div class="tile">
-        <div class="icon" aria-hidden="true">✨</div>
-        <h3>Анимация</h3>
-        <p>Короткие анимированные ролики, интро, баннеры. Акцент на “дорогой” вайб.</p>
-        <div class="price">
-          <span class="tag">Motion</span>
-          <span><b>по запросу</b></span>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PORTFOLIO -->
-<div class="wrap section" id="portfolio">
-  <div class="sectionHeader">
-    <div>
-      <h2>Портфолио</h2>
-      <p>Примеры работ (клик — увеличить).</p>
-    </div>
-  </div>
-
-  <div class="portfolio" id="portfolioGrid"></div>
+<div class="nav">
+<div><strong>Ton Secret Shop</strong></div>
+<a class="btn" href="https://t.me/TSS_SHOPbot" target="_blank">Order in Telegram</a>
 </div>
 
-<!-- MODAL (просмотр) -->
-<div class="modal" id="imgModal" aria-hidden="true">
-  <div class="modalOverlay" data-close="1"></div>
-  <div class="modalBox" role="dialog" aria-modal="true" aria-label="Просмотр работы">
-    <button class="modalClose" type="button" data-close="1">✕</button>
-    <img class="modalImg" id="modalImg" alt="Work preview" />
-  </div>
+<div class="hero">
+<h1>Дизайн для Web3 и Telegram проектов</h1>
+<p>Стикеры, NFT, анимация и брендинг в минималистичном стиле. Быстро, аккуратно и без лишнего шума.</p>
+</div>
+
+<div class="section">
+<h2>Услуги</h2>
+<div class="grid">
+<div class="card">
+<strong>Стикеры / Эмодзи</strong><br><br>
+Статика — $6.5<br>
+Анимация — $55
+</div>
+
+<div class="card">
+<strong>NFT Арт</strong><br><br>
+Статика — от $150<br>
+Анимация — от $250
+</div>
+
+<div class="card">
+<strong>Анимация</strong><br><br>
+Короткие ролики и motion-дизайн
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>Портфолио</h2>
+<div class="grid" id="portfolio"></div>
+</div>
+
+<div class="footer">
+© <span id="year"></span> Ton Secret Shop
+</div>
+
+</div>
+
+<div class="modal" id="modal">
+<img id="modalImg">
 </div>
 
 <script>
-  // Настройки портфолио:
-  // 1) Закидывай картинки в репозиторий: /images/pic1.png, pic2.png, ...
-  // 2) maxPics — сколько максимум пробовать подгружать (можешь увеличить)
-  const maxPics = 24;
-  const grid = document.getElementById("portfolioGrid");
+document.getElementById("year").textContent=new Date().getFullYear();
 
-  for (let i = 1; i <= maxPics; i++) {
-    const src = `images/pic${i}.png`;
+const portfolio=document.getElementById("portfolio");
+const modal=document.getElementById("modal");
+const modalImg=document.getElementById("modalImg");
 
-    const a = document.createElement("a");
-    a.href = src;
-    a.className = "ph isImg";
-    a.setAttribute("data-src", src);
+const maxImages=30;
 
-    const img = document.createElement("img");
-    img.loading = "lazy";
-    img.alt = `Work ${String(i).padStart(2, "0")}`;
-    img.src = src;
+for(let i=1;i<=maxImages;i++){
+let src=`images/pic${i}.png`;
 
-    // Если файла нет — карточка не показывается
-    img.onerror = () => a.remove();
+let wrapper=document.createElement("div");
+wrapper.className="portfolio-item";
 
-    a.appendChild(img);
-    grid.appendChild(a);
-  }
+let img=document.createElement("img");
+img.src=src;
+img.loading="lazy";
 
-  // Модалка: клик по картинке — показать крупно
-  const modal = document.getElementById("imgModal");
-  const modalImg = document.getElementById("modalImg");
+img.onerror=()=>wrapper.remove();
 
-  grid.addEventListener("click", (e) => {
-    const card = e.target.closest(".ph.isImg");
-    if (!card) return;
-    e.preventDefault();
-    const src = card.getAttribute("data-src");
-    modalImg.src = src;
-    modal.classList.add("open");
-    modal.setAttribute("aria-hidden", "false");
-  });
+wrapper.appendChild(img);
+portfolio.appendChild(wrapper);
 
-  // Закрытие по клику на крестик/фон и по Esc
-  modal.addEventListener("click", (e) => {
-    if (e.target && e.target.getAttribute("data-close")) closeModal();
-  });
+wrapper.onclick=()=>{
+modalImg.src=src;
+modal.classList.add("open");
+};
+}
 
-  window.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") closeModal();
-  });
-
-  function closeModal() {
-    modal.classList.remove("open");
-    modal.setAttribute("aria-hidden", "true");
-    modalImg.src = "";
-  }
+modal.onclick=()=>{
+modal.classList.remove("open");
+modalImg.src="";
+};
 </script>
-  
-  <!-- PRICES -->
-  <div class="wrap section" id="prices">
-    <div class="sectionHeader">
-      <div>
-        <h2>Прайс</h2>
-        <p>Прозрачно и по делу. (Ты можешь легко поменять цифры прямо в коде.)</p>
-      </div>
-    </div>
 
-    <div class="grid3">
-      <div class="tile">
-        <h3>⭐️ Стикеры / Эмодзи</h3>
-        <p>Статичные — <b>$6.5</b> / шт<br/>
-           Анимированные — <b>$55</b> / шт<br/>
-           Правки: 2 бесплатно, дальше <b>$1</b> / правка</p>
-      </div>
-
-      <div class="tile">
-        <h3>🌸 Дизайн</h3>
-        <p>Обои/Аватар/Баннер — <b>$20</b><br/>
-           Логотип — <b>$40</b><br/>
-           Комикс — <b>$100–150</b> (8–30 стр.)</p>
-      </div>
-
-      <div class="tile">
-        <h3>⭐️ Композиция сторис</h3>
-        <p>9 частей — <b>$30</b><br/>
-           12 частей — <b>$50</b><br/>
-           15 частей — <b>$70</b></p>
-      </div>
-    </div>
-  </div>
-
-  <!-- CTA -->
-  <div class="wrap section">
-    <div class="cta">
-      <div>
-        <h3>Готов стартовать прямо сейчас?</h3>
-        <p>Нажми кнопку, выбери услугу и скинь референсы. Мы быстро ответим и обозначим срок.</p>
-      </div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a class="btn" href="https://t.me/TSS_SHOPbot" target="_blank" rel="noreferrer">Order in Telegram</a>
-        <a class="btn2" href="#top">Наверх</a>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div>© <span id="y"></span> Ton Secret Shop</div>
-      <div style="display:flex;gap:10px;flex-wrap:wrap">
-        <a class="chip" href="https://t.me/TSS_SHOPbot" target="_blank" rel="noreferrer">@TSS_SHOPbot</a>
-        <a class="chip" href="#services">Services</a>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    document.getElementById("y").textContent = new Date().getFullYear();
-  </script>
 </body>
-
 </html>
