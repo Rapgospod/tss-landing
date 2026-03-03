@@ -266,6 +266,58 @@
       .grid3{grid-template-columns:1fr}
       .portfolio{grid-template-columns:repeat(3,1fr)}
     }
+    /* Portfolio images */
+.ph.isImg { cursor: zoom-in; }
+.ph.isImg img{
+  width:100%;
+  height:100%;
+  object-fit: cover;
+  display:block;
+  border-radius: 18px;
+  filter: saturate(1.05);
+}
+
+/* Modal */
+.modal{
+  position: fixed;
+  inset: 0;
+  display: none;
+  z-index: 999;
+}
+.modal.open{ display:block; }
+.modalOverlay{
+  position:absolute; inset:0;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(8px);
+}
+.modalBox{
+  position: absolute;
+  left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: min(920px, calc(100vw - 28px));
+  border-radius: 22px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(8,10,16,.78);
+  box-shadow: 0 30px 120px rgba(0,0,0,.7);
+  overflow: hidden;
+}
+.modalImg{
+  width: 100%;
+  height: auto;
+  display:block;
+}
+.modalClose{
+  position:absolute;
+  top:10px; right:10px;
+  width: 40px; height: 40px;
+  border-radius: 999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.08);
+  color: rgba(255,255,255,.92);
+  font-weight: 900;
+  cursor: pointer;
+}
+.modalClose:hover{ background: rgba(255,255,255,.12); }
   </style>
 </head>
 <body>
@@ -379,29 +431,83 @@
   </div>
 
   <!-- PORTFOLIO -->
-  <div class="wrap section" id="portfolio">
-    <div class="sectionHeader">
-      <div>
-        <h2>Портфолио</h2>
-        <p>Поставь сюда 6–12 работ. Сейчас стоят заглушки — заменишь на реальные картинки.</p>
-      </div>
+<div class="wrap section" id="portfolio">
+  <div class="sectionHeader">
+    <div>
+      <h2>Портфолио</h2>
+      <p>Примеры работ (клик — увеличить).</p>
     </div>
-
-    <div class="portfolio">
-      <div class="ph"><span>Work 01</span></div>
-      <div class="ph"><span>Work 02</span></div>
-      <div class="ph"><span>Work 03</span></div>
-      <div class="ph"><span>Work 04</span></div>
-      <div class="ph"><span>Work 05</span></div>
-      <div class="ph"><span>Work 06</span></div>
-    </div>
-
-    <p style="margin:12px 0 0;color:var(--muted);font-size:13px">
-      Как заменить заглушки: добавь картинки в папку <b>images/</b> и поменяй блоки в коде на <code>&lt;img&gt;</code>.
-      Если хочешь — я в следующем сообщении дам готовый вариант с <code>&lt;img src="images/..."&gt;</code>.
-    </p>
   </div>
 
+  <div class="portfolio" id="portfolioGrid"></div>
+</div>
+
+<!-- MODAL (просмотр) -->
+<div class="modal" id="imgModal" aria-hidden="true">
+  <div class="modalOverlay" data-close="1"></div>
+  <div class="modalBox" role="dialog" aria-modal="true" aria-label="Просмотр работы">
+    <button class="modalClose" type="button" data-close="1">✕</button>
+    <img class="modalImg" id="modalImg" alt="Work preview" />
+  </div>
+</div>
+
+<script>
+  // Настройки портфолио:
+  // 1) Закидывай картинки в репозиторий: /images/pic1.png, pic2.png, ...
+  // 2) maxPics — сколько максимум пробовать подгружать (можешь увеличить)
+  const maxPics = 24;
+  const grid = document.getElementById("portfolioGrid");
+
+  for (let i = 1; i <= maxPics; i++) {
+    const src = `images/pic${i}.png`;
+
+    const a = document.createElement("a");
+    a.href = src;
+    a.className = "ph isImg";
+    a.setAttribute("data-src", src);
+
+    const img = document.createElement("img");
+    img.loading = "lazy";
+    img.alt = `Work ${String(i).padStart(2, "0")}`;
+    img.src = src;
+
+    // Если файла нет — карточка не показывается
+    img.onerror = () => a.remove();
+
+    a.appendChild(img);
+    grid.appendChild(a);
+  }
+
+  // Модалка: клик по картинке — показать крупно
+  const modal = document.getElementById("imgModal");
+  const modalImg = document.getElementById("modalImg");
+
+  grid.addEventListener("click", (e) => {
+    const card = e.target.closest(".ph.isImg");
+    if (!card) return;
+    e.preventDefault();
+    const src = card.getAttribute("data-src");
+    modalImg.src = src;
+    modal.classList.add("open");
+    modal.setAttribute("aria-hidden", "false");
+  });
+
+  // Закрытие по клику на крестик/фон и по Esc
+  modal.addEventListener("click", (e) => {
+    if (e.target && e.target.getAttribute("data-close")) closeModal();
+  });
+
+  window.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+
+  function closeModal() {
+    modal.classList.remove("open");
+    modal.setAttribute("aria-hidden", "true");
+    modalImg.src = "";
+  }
+</script>
+  
   <!-- PRICES -->
   <div class="wrap section" id="prices">
     <div class="sectionHeader">
@@ -461,4 +567,5 @@
     document.getElementById("y").textContent = new Date().getFullYear();
   </script>
 </body>
+
 </html>
